@@ -23,6 +23,8 @@ public class FlappyBird extends PApplet {
 	int pipeGap = 150;
 	int lowerY;
 	
+	int score = 0;
+	
 	boolean gameOver = false;
 
 	@Override
@@ -48,6 +50,7 @@ public class FlappyBird extends PApplet {
 			background(0, 0, 0);
 			textSize(32);
 			text("Game Over!", WIDTH/2-75, HEIGHT/2);
+			text("Score: " + score, WIDTH/2 - 75, HEIGHT/2+50);
 			return;
 		}
 		
@@ -55,6 +58,9 @@ public class FlappyBird extends PApplet {
 		image(pipeBottom, pipeX, lowerY);
 		image(pipeTop, pipeX, upperPipeHeight);
 		image(bird, x, y);
+		
+		textSize(24);
+		text("Score: " + score, 25, 25);
 
 		y += birdYVelocity;
 		birdYVelocity += gravity;
@@ -62,6 +68,7 @@ public class FlappyBird extends PApplet {
 		pipeX -= 5;
 		if (pipeX < 0) {
 			teleportPipes();
+			score += 100;
 		}
 		
 		if (intersectsPipes()) {
@@ -91,8 +98,13 @@ public class FlappyBird extends PApplet {
 	
 	@Override
 	public void mousePressed() {
-		if (gameOver)
-			return;
+		if (gameOver) {
+			gameOver = false;
+			score = 0;
+			x = 250;
+			y = 300;
+			teleportPipes();
+		}
 		
 		birdYVelocity = -10;
 	}
